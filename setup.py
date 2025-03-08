@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-	name="pdf_extractor",
-	version="0.1.0",
+	name="pdf-extractor",
+	version="0.1.1",
 	packages=find_packages(),
 	install_requires=[
 		"pdfplumber",
@@ -17,4 +17,5 @@ setup(
 			'pdf-extract=pdf_extractor.cli:main',
 		],
 	},
+	python_requires='>=3.7',
 )
