@@ -55,7 +55,7 @@ def main():
 		type=str,
 		choices=[method.value for method in ExtractionMethod],
 		required=True,
-		help="Extraction method to use"
+		help="Extraction method to use (use 'all' to run all methods)"
 	)
 	
 	parser.add_argument(
@@ -69,26 +69,64 @@ def main():
 	
 	try:
 		# Convert method string to enum
-		method = ExtractionMethod(args.method)
+		method = ExtractionMethod(args.method.lower() if args.method.lower() == 'all' else args.method)
 		
-		# Initialize extractor and process file
+		# Initialize extractor
 		extractor = PDFTextExtractor(args.file)
-		print(f"Extracting text using {method.value}...")
 		
-		# Extract and save text
-		extracted_text = extractor.extract_text(method)
-		output_path = save_extracted_text(extracted_text, args.file, method)
-		
-		# Print results
-		print(f"\nExtraction complete. File saved:")
-		print(f"- {output_path}")
-		
-		# Print statistics
-		print_extraction_stats(method.value, extracted_text)
+		if method == ExtractionMethod.ALL:
+			# Run all methods and collect results
+			print("Running all extraction methods...")
+			results = {}
+			
+			for processing_method in ExtractionMethod.get_processing_methods():
+				try:
+					print(f"\nExtracting text using {processing_method.value}...")
+					extracted_text = extractor.extract_text(processing_method)
+					output_path = save_extracted_text(extracted_text, args.file, processing_method)
+					
+					results[processing_method.value] = {
+						'text': extracted_text,
+						'output_path': output_path,
+						'stats': {
+							'characters': len(extracted_text),
+							'words': len(extracted_text.split()),
+							'lines': len(extracted_text.splitlines())
+						}
+					}
+					
+					print(f"✓ Saved to: {output_path}")
+					
+				except Exception as e:
+					print(f"✗ Failed: {str(e)}")
+					results[processing_method.value] = {'error': str(e)}
+			
+			# Print comparative results
+			print("\n=== Extraction Results Summary ===")
+			print("\nMethod                  Characters    Words        Lines")
+			print("-" * 65)
+			
+			for method_name, result in results.items():
+				if 'stats' in result:
+					stats = result['stats']
+					print(f"{method_name:<22} {stats['characters']:>11,} {stats['words']:>11,} {stats['lines']:>11,}")
+				else:
+					print(f"{method_name:<22} Failed: {result['error']}")
+			
+		else:
+			# Run single method
+			print(f"Extracting text using {method.value}...")
+			extracted_text = extractor.extract_text(method)
+			output_path = save_extracted_text(extracted_text, args.file, method)
+			
+			print(f"\nExtraction complete. File saved:")
+			print(f"- {output_path}")
+			
+			print_extraction_stats(method.value, extracted_text)
 		
 	except Exception as e:
 		print(f"Error: {str(e)}", file=sys.stderr)
 		sys.exit(1)
-
+		
 if __name__ == "__main__":
 	main()
