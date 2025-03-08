@@ -17,6 +17,7 @@ from transformers import pipeline
 
 class ExtractionMethod(Enum):
 	"""Enumeration of available extraction methods."""
+	ALL = "all"          # Add this line
 	PDFPLUMBER = "PDFPlumber"
 	PYMUPDF = "PyMuPDF"
 	PYPDF2 = "PyPDF2"
@@ -27,7 +28,13 @@ class ExtractionMethod(Enum):
 	def list_methods(cls):
 		"""Return list of available method names."""
 		return [method.value for method in cls]
-
+	
+	@classmethod
+	def get_processing_methods(cls):
+		"""Return list of actual processing methods (excluding ALL)."""
+		return [method for method in cls if method != cls.ALL]
+	
+	
 class PDFTextExtractor:
 	"""
 	A class that provides multiple methods for extracting text from PDF documents.

@@ -1,5 +1,11 @@
 # A simple package to extract text from PDFs
 
+We often have to compare packages that could be used to perform the same task. 
+
+Lots of document processing tasks require text to be extracted from PDFs. 
+
+This package is intended to help test different text extraction packages to help choose the best for the type of source documents being incorporated into other projects.
+
 ## Install
 
 ```bash
@@ -26,6 +32,14 @@ pdf-extract --method Donut --file path/to/document.pdf
 # using LayoutLM
 pdf-extract --method LayoutLM --file path/to/document.pdf
 ```
+
+To test and compare all available text extraction packages:
+
+```bash
+pdf-extract --method all --file path/to/document.pdf
+```
+
+A file will be save in the same directory as the source document in the format: document-package.txt
 
 ### As a library in another project:
 
