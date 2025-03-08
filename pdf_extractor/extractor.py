@@ -1,6 +1,8 @@
 """
 Core functionality for PDF text extraction.
 Provides different methods for extracting text from PDF documents.
+
+See the Readme for further information.
 """
 
 import os
