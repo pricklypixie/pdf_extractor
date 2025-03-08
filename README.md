@@ -1,3 +1,11 @@
+# A simple package to extract text from PDFs
+
+## Install
+
+pip install git+https://github.com/pricklypixie/pdf-extractor.git
+
+## Use
+
 To use the package:
 
 As a command-line tool:
