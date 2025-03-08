@@ -15,7 +15,6 @@ pip install git+https://github.com/pricklypixie/pdf-extractor.git
 ```
 
 To install from downloaded package:
-```bash
 
 ```bash
 git clone https://github.com/pricklypixie/pdf-extractor.git
@@ -23,9 +22,7 @@ cd pdf-extractor
 pip install -e .
 ```
 
-## To use the package:
-
-### As a command-line tool:
+## Use the package as a command-line tool:
 
 ```bash
 # using pdfplumber
@@ -71,7 +68,7 @@ pdf-extract --method all --file path/to/document.pdf
 
 
 
-### As a library in another project:
+## Use the package as a library in another project:
 
 ```python
 from pdf_extractor import PDFTextExtractor, ExtractionMethod
