@@ -21,12 +21,7 @@ wheels/
 *.egg
 
 # Project specific
-document_index/
-documents/
-prompts/
 .env
-process_citations.py
-process_pdf.py
 
 # Logs and databases
 *.log

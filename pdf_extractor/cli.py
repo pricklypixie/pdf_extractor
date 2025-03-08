@@ -5,6 +5,8 @@ Command-line interface for PDF text extraction.
 import argparse
 import os
 import sys
+import time
+
 from .extractor import PDFTextExtractor, ExtractionMethod
 
 def save_extracted_text(text: str, pdf_path: str, method: ExtractionMethod) -> str:
@@ -82,7 +84,13 @@ def main():
 			for processing_method in ExtractionMethod.get_processing_methods():
 				try:
 					print(f"\nExtracting text using {processing_method.value}...")
+					
+					# Time the extraction process
+					start_time = time.time()
 					extracted_text = extractor.extract_text(processing_method)
+					end_time = time.time()
+					execution_time = end_time - start_time
+					
 					output_path = save_extracted_text(extracted_text, args.file, processing_method)
 					
 					results[processing_method.value] = {
@@ -91,36 +99,48 @@ def main():
 						'stats': {
 							'characters': len(extracted_text),
 							'words': len(extracted_text.split()),
-							'lines': len(extracted_text.splitlines())
+							'lines': len(extracted_text.splitlines()),
+							'time': execution_time
 						}
 					}
 					
 					print(f"✓ Saved to: {output_path}")
+					print(f"  Time taken: {execution_time:.2f} seconds")
 					
 				except Exception as e:
 					print(f"✗ Failed: {str(e)}")
 					results[processing_method.value] = {'error': str(e)}
 			
-			# Print comparative results
-			print("\n=== Extraction Results Summary ===")
-			print("\nMethod                  Characters    Words        Lines")
-			print("-" * 65)
+			# Print comparative results in markdown format
+			print("\n### Extraction Results Summary")
+			print("\n| Method | Characters | Words | Lines | Time (seconds) |")
+			print("|---------|------------|-------|-------|----------------|")
 			
 			for method_name, result in results.items():
 				if 'stats' in result:
 					stats = result['stats']
-					print(f"{method_name:<22} {stats['characters']:>11,} {stats['words']:>11,} {stats['lines']:>11,}")
+					print(f"| {method_name} | {stats['characters']:,} | {stats['words']:,} | "
+						  f"{stats['lines']:,} | {stats['time']:.2f} |")
 				else:
-					print(f"{method_name:<22} Failed: {result['error']}")
+					print(f"| {method_name} | Failed: {result['error']} | - | - | - |")
+			
+			# Add a blank line at the end for better markdown formatting
+			print()
 			
 		else:
-			# Run single method
+			# Run single method with timing
 			print(f"Extracting text using {method.value}...")
+			
+			start_time = time.time()
 			extracted_text = extractor.extract_text(method)
+			end_time = time.time()
+			execution_time = end_time - start_time
+			
 			output_path = save_extracted_text(extracted_text, args.file, method)
 			
 			print(f"\nExtraction complete. File saved:")
 			print(f"- {output_path}")
+			print(f"Time taken: {execution_time:.2f} seconds")
 			
 			print_extraction_stats(method.value, extracted_text)
 		

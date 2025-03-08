@@ -58,13 +58,13 @@ pdf-extract --method all --file path/to/document.pdf
 
 === Extraction Results Summary ===
 
-| Method | Characters | Words | Lines |
-|:--|:--|:--|:--|
-| PDFPlumber | 51,529 | 2,858 | 785 |
-| PyMuPDF | 56,988 | 8,291 | 1,515 |
-| PyPDF2 | 56,929 | 8,255 | 738 |
-| Donut | 458 | 60 | 22 |
-| LayoutLM | 795 | 122 | 23 |
+| Method | Characters | Words | Lines | Time (seconds) |
+|---------|------------|-------|-------|----------------|
+| PDFPlumber | 51,529 | 2,858 | 785 | 3.99 |
+| PyMuPDF | 56,988 | 8,291 | 1,515 | 0.14 |
+| PyPDF2 | 56,929 | 8,255 | 738 | 1.96 |
+| Donut | 458 | 60 | 22 | 29.82 |
+| LayoutLM | 851 | 131 | 23 | 46.22 |
 
 
 
