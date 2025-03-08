@@ -2,7 +2,9 @@
 
 ## Install
 
+```bash
 pip install git+https://github.com/pricklypixie/pdf-extractor.git
+```
 
 ## Use
 
